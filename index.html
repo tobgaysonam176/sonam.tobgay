@@ -49,18 +49,19 @@ h2{font-size:clamp(1.8rem,7vw,2.4rem);margin-bottom:28px}
 /* reasons */
 .reason{min-height:7.5em;font:italic 400 clamp(1.4rem,6vw,1.9rem)/1.35 Fraunces,Georgia,serif;margin:0 0 24px}
 button.b{font:500 1rem "DM Sans",sans-serif;min-height:48px;padding:14px 28px;border-radius:999px;border:0;cursor:pointer;background:var(--lotus);color:var(--plum)}
-button.b.alt{background:transparent;color:var(--ink);border:2px solid var(--lotus)}
+button.b.alt{background:var(--plum);color:var(--ink);border:2px solid var(--lotus)}
 
 /* letter */
 .letter{font:400 1.2rem/1.8 Fraunces,Georgia,serif;white-space:pre-wrap;min-height:16em}
 .cur::after{content:"";display:inline-block;width:2px;height:1.1em;background:var(--saffron);margin-left:2px;vertical-align:-2px;animation:bl 1s steps(1) infinite}
 @keyframes bl{50%{opacity:0}}
 
-/* ask: the No button is positioned inside this section only */
-.ask{text-align:center;min-height:80vh;min-height:80svh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.ask h2{font-size:clamp(1.6rem,8vw,3rem)}
-.btns{display:flex;gap:16px;justify-content:center;align-items:center;min-height:60px;flex-wrap:wrap}
-#no{transition:left .25s,top .25s;touch-action:manipulation;z-index:2}
+/* ask */
+.ask{text-align:center;min-height:80vh;min-height:80svh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ask h2{font-size:clamp(1.6rem,8vw,3rem);margin-bottom:12px}
+/* the play area: No only ever moves inside this box, right around Yes */
+.btns{position:relative;width:100%;max-width:420px;height:clamp(170px,30vh,240px);display:flex;gap:16px;justify-content:center;align-items:center}
+#no{transition:left .25s,top .25s;touch-action:manipulation;z-index:2;white-space:nowrap}
 .yes{font-size:1.4rem;color:var(--saffron)}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:24px 24px 48px}
 
@@ -221,45 +222,39 @@ function type(){
 }
 new IntersectionObserver(function(e){ if (e[0].isIntersecting) type(); }, {threshold:.5}).observe(L);
 
-// the question: "No" moves only inside the last section and inside the visible screen
-var no = $("no"), yes = $("yes"), ask = $("ask"), head = $("q"), holder = null, lastT = 0;
+// the question: "No" only moves inside the small box around the Yes button,
+// so it never covers the question and never leaves the phone screen
+var no = $("no"), yes = $("yes"), area = $("btns"), holder = null, lastT = 0;
 function hit(a, b, g){ return !(a.right+g < b.left || a.left-g > b.right || a.bottom+g < b.top || a.top-g > b.bottom); }
 function dodge(){
   var now = Date.now(); if (now - lastT < 250) return; lastT = now;
-  var a = ask.getBoundingClientRect(), r = no.getBoundingClientRect(), w = r.width, h = r.height, m = 12;
+  var b = area.getBoundingClientRect(), r = no.getBoundingClientRect(), w = r.width, h = r.height, m = 6;
   if (!holder) {
-    // keep a placeholder so the layout doesn't jump when No becomes absolutely positioned
+    // placeholder keeps Yes from jumping when No starts moving
     holder = document.createElement("span");
     holder.style.cssText = "display:inline-block;width:"+w+"px;height:"+h+"px";
-    no.parentNode.insertBefore(holder, no);
+    area.insertBefore(holder, no);
     no.style.position = "absolute";
-    no.style.left = (r.left - a.left) + "px";
-    no.style.top = (r.top - a.top) + "px";
+    no.style.left = (r.left - b.left) + "px";
+    no.style.top = (r.top - b.top) + "px";
   }
-  var vh = window.innerHeight;
-  var minX = m, maxX = Math.max(minX, a.width - w - m);
-  var minY = Math.max(m, -a.top + m), maxY = Math.max(minY, Math.min(a.height - h - m, vh - a.top - h - m));
-  var y = yes.getBoundingClientRect(), hd = head.getBoundingClientRect(), x, yy, tries = 0, ok;
-  do {
-    x = minX + Math.random()*(maxX - minX);
-    yy = minY + Math.random()*(maxY - minY);
-    var box = {left:a.left+x, top:a.top+yy, right:a.left+x+w, bottom:a.top+yy+h};
-    ok = Math.hypot(box.left - r.left, box.top - r.top) > 80 && !hit(box, y, 16) && !hit(box, hd, 8);
-    tries++;
-  } while (!ok && tries < 40);
-  no.style.left = x + "px";
-  no.style.top = yy + "px";
+  var maxX = Math.max(m, b.width - w - m), maxY = Math.max(m, b.height - h - m);
+  var y = yes.getBoundingClientRect();
+  var yb = {left:y.left-b.left, top:y.top-b.top, right:y.right-b.left, bottom:y.bottom-b.top};
+  var cx = r.left - b.left, cy = r.top - b.top, best = null, far = -1;
+  for (var i = 0; i < 40; i++) {
+    var x = m + Math.random()*(maxX - m), yy = m + Math.random()*(maxY - m);
+    if (hit({left:x, top:yy, right:x+w, bottom:yy+h}, yb, 12)) continue;
+    var d = Math.hypot(x - cx, yy - cy);
+    if (d > 70) { best = [x, yy]; break; }
+    if (d > far) { far = d; best = [x, yy]; }
+  }
+  if (!best) best = [m, m];
+  no.style.left = best[0] + "px";
+  no.style.top = best[1] + "px";
 }
-// if the screen scrolls or rotates and No ends up off-screen, bring it back
-function keep(){
-  if (!holder) return;
-  var a = ask.getBoundingClientRect();
-  if (a.bottom <= 0 || a.top >= window.innerHeight) return;
-  var r = no.getBoundingClientRect();
-  if (r.top < 0 || r.bottom > window.innerHeight || r.left < 0 || r.right > document.documentElement.clientWidth) { lastT = 0; dodge(); }
-}
-window.addEventListener("scroll", keep, {passive:true});
-window.addEventListener("resize", keep);
+// if the phone rotates, put No back inside the box
+window.addEventListener("resize", function(){ if (holder) { lastT = 0; dodge(); } });
 
 no.addEventListener("pointerenter", function(e){ if (e.pointerType === "mouse") dodge(); });
 no.addEventListener("pointerdown", function(e){ e.preventDefault(); dodge(); });
