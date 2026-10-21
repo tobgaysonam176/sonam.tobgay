@@ -11,15 +11,15 @@
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 *,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-html,body{margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
 body{background:var(--plum);color:var(--ink);font:400 17px/1.6 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 h1,h2,.serif{font-family:Fraunces,Georgia,serif;font-weight:500;margin:0}
 section{max-width:640px;margin:0 auto;padding:72px 24px}
 :focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
 
 /* hero */
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:40px;
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:40px;
   background:radial-gradient(ellipse at 50% 30%,var(--plum2),var(--plum) 70%)}
 .heart{position:relative;display:grid;place-items:center;aspect-ratio:1;background:var(--lotus);clip-path:url(#heartClip);color:var(--plum);font-size:.7rem;text-align:center;line-height:1.2;padding-bottom:12%}
 .heart img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -32,29 +32,23 @@ h1{font-size:clamp(3.2rem,16vw,6rem);line-height:1;margin-top:8px}
 h1 span{display:block;font-style:italic;font-weight:400;font-size:.38em;color:var(--lotus);margin-bottom:.35em}
 .counter{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:36px 0 10px;width:100%;max-width:420px}
 .counter div{border-top:2px solid var(--saffron);padding-top:6px}
-.counter b{display:block;font:500 clamp(1.6rem,8vw,2.4rem)/1.1 Fraunces,Georgia,serif;font-variant-numeric:tabular-nums}
+.counter b{display:block;font:500 clamp(1.4rem,8vw,2.4rem)/1.1 Fraunces,Georgia,serif;font-variant-numeric:tabular-nums}
 .counter small{color:var(--muted);font-size:.8rem}
 .sub{color:var(--muted);margin:0}
 
 h2{font-size:clamp(1.8rem,7vw,2.4rem);margin-bottom:28px}
 
-/* months */
-.month{display:grid;grid-template-columns:110px 1fr;gap:18px;padding:20px 0;border-top:1px solid #ffffff22}
-.ph{aspect-ratio:1;border-radius:50% 50% 50% 4px;background:var(--plum2);overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:.75rem;text-align:center;padding:6px}
-.ph img{width:100%;height:100%;object-fit:cover}
-.month h3{font:500 1.25rem Fraunces,Georgia,serif;margin:0 0 4px;color:var(--lotus)}
-.month p{margin:0}
-
 /* wishlist */
 .wish{list-style:none;margin:0;padding:0}
-.wish button{display:flex;gap:14px;align-items:center;width:100%;text-align:left;font:400 1.1rem/1.4 "DM Sans",sans-serif;color:var(--ink);background:none;border:0;border-top:1px solid #ffffff22;padding:16px 0;cursor:pointer}
+.wish button{display:flex;gap:14px;align-items:center;width:100%;min-height:52px;text-align:left;font:400 1.1rem/1.4 "DM Sans",sans-serif;color:var(--ink);background:none;border:0;border-top:1px solid #ffffff22;padding:16px 0;cursor:pointer}
 .wish i{flex:none;width:26px;height:26px;border:2px solid var(--lotus);border-radius:50% 50% 50% 4px;display:grid;place-items:center;font-style:normal;color:var(--plum);transition:background .2s}
 .wish button[aria-pressed=true] i{background:var(--lotus)}
 .wish button[aria-pressed=true] i::after{content:"\2665"}
 .wish button[aria-pressed=true] span{color:var(--muted)}
+
 /* reasons */
 .reason{min-height:7.5em;font:italic 400 clamp(1.4rem,6vw,1.9rem)/1.35 Fraunces,Georgia,serif;margin:0 0 24px}
-button.b{font:500 1rem "DM Sans",sans-serif;padding:14px 26px;border-radius:999px;border:0;cursor:pointer;background:var(--lotus);color:var(--plum)}
+button.b{font:500 1rem "DM Sans",sans-serif;min-height:48px;padding:14px 28px;border-radius:999px;border:0;cursor:pointer;background:var(--lotus);color:var(--plum)}
 button.b.alt{background:transparent;color:var(--ink);border:2px solid var(--lotus)}
 
 /* letter */
@@ -62,14 +56,21 @@ button.b.alt{background:transparent;color:var(--ink);border:2px solid var(--lotu
 .cur::after{content:"";display:inline-block;width:2px;height:1.1em;background:var(--saffron);margin-left:2px;vertical-align:-2px;animation:bl 1s steps(1) infinite}
 @keyframes bl{50%{opacity:0}}
 
-/* ask */
-.ask{text-align:center;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
-.ask h2{font-size:clamp(2rem,9vw,3rem)}
-.btns{display:flex;gap:16px;justify-content:center;align-items:center;min-height:60px;position:relative;flex-wrap:wrap}
-#no{transition:transform .25s}
+/* ask: the No button is positioned inside this section only */
+.ask{text-align:center;min-height:80vh;min-height:80svh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ask h2{font-size:clamp(1.6rem,8vw,3rem)}
+.btns{display:flex;gap:16px;justify-content:center;align-items:center;min-height:60px;flex-wrap:wrap}
+#no{transition:left .25s,top .25s;touch-action:manipulation;z-index:2}
 .yes{font-size:1.4rem;color:var(--saffron)}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:24px 24px 48px}
-@media (prefers-reduced-motion:reduce){.p{transition:none}.cur::after{animation:none}#no{transition:none}}
+
+@media (max-width:380px){
+  section{padding:56px 18px}
+  .counter{gap:4px}
+  .counter small{font-size:.7rem}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){.cur::after{animation:none}#no{transition:none}}
 </style>
 </head>
 <body>
@@ -116,8 +117,8 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:24px 24px 4
   <div class="letter" id="letter"></div>
 </section>
 
-<section class="ask">
-  <h2>Pema Selden, you are the best part of my life. Will you be my partner forever?</h2>
+<section class="ask" id="ask">
+  <h2 id="q">Pema Selden, you are the best part of my life. Will you be my partner forever?</h2>
   <div class="btns" id="btns">
     <button class="b" id="yes">Yes</button>
     <button class="b alt" id="no">No</button>
@@ -139,7 +140,7 @@ var WISHES = [
   "Watch a movie side by side instead of on a call"
 ];
 var REASONS = [
-    "Every little message from you brings a smile to my face and makes my day.",
+  "Every little message from you brings a smile to my face and makes my day.",
   "Your laugh through the phone makes any day better.",
   "You make a normal chat feel like the best part of my day.",
   "I feel like myself around you.",
@@ -153,9 +154,7 @@ var LETTER = "Pema,\n\nFour months ago we were two people chatting, and now I sm
 var $ = function(id){return document.getElementById(id)};
 var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-
 // counter
-function pad(n){return n}
 function tick(){
   var now = new Date(), m = (now.getFullYear()-START.getFullYear())*12 + now.getMonth()-START.getMonth();
   var base = new Date(START); base.setMonth(START.getMonth()+m);
@@ -170,11 +169,14 @@ function tick(){
 tick(); setInterval(tick, 1000);
 
 // heart photos (tap a heart to choose a photo)
-var HEART_PHOTOS = {ph1:"", ph2:""};  // paste image data here to keep photos permanently
-function showPhoto(k, src){ var im=$(k); im.src=src; im.hidden=false; }
-Object.keys(HEART_PHOTOS).forEach(function(k){
-  var s = HEART_PHOTOS[k];
-  try { s = s || localStorage.getItem(k) || ""; } catch(e) {}
+function showPhoto(k, src){
+  var inp = document.querySelector('.heart input[data-k="'+k+'"]');
+  var im = inp && inp.parentNode.querySelector("img");
+  if (im) { im.src = src; im.hidden = false; }
+}
+["ph1","ph2"].forEach(function(k){
+  var s = "";
+  try { s = localStorage.getItem(k) || ""; } catch(e) {}
   if (s) showPhoto(k, s);
 });
 document.querySelectorAll(".heart input").forEach(function(inp){
@@ -193,7 +195,7 @@ document.querySelectorAll(".heart input").forEach(function(inp){
   });
 });
 
-// months
+// wishlist
 $("wish").innerHTML = WISHES.map(function(w){
   return '<li><button aria-pressed="false"><i></i><span>'+w+'</span></button></li>';
 }).join("");
@@ -219,30 +221,52 @@ function type(){
 }
 new IntersectionObserver(function(e){ if (e[0].isIntersecting) type(); }, {threshold:.5}).observe(L);
 
-// the question
-var no = $("no"), cx = 0, cy = 0;
-no.style.touchAction = "manipulation";
+// the question: "No" moves only inside the last section and inside the visible screen
+var no = $("no"), yes = $("yes"), ask = $("ask"), head = $("q"), holder = null, lastT = 0;
+function hit(a, b, g){ return !(a.right+g < b.left || a.left-g > b.right || a.bottom+g < b.top || a.top-g > b.bottom); }
 function dodge(){
-  var r = no.getBoundingClientRect(), y = $("yes").getBoundingClientRect();
-  var ox = r.left - cx, oy = r.top - cy, pad = 12, w = window.innerWidth, h = window.innerHeight;
-  var tx, ty, tries = 0, ok;
+  var now = Date.now(); if (now - lastT < 250) return; lastT = now;
+  var a = ask.getBoundingClientRect(), r = no.getBoundingClientRect(), w = r.width, h = r.height, m = 12;
+  if (!holder) {
+    // keep a placeholder so the layout doesn't jump when No becomes absolutely positioned
+    holder = document.createElement("span");
+    holder.style.cssText = "display:inline-block;width:"+w+"px;height:"+h+"px";
+    no.parentNode.insertBefore(holder, no);
+    no.style.position = "absolute";
+    no.style.left = (r.left - a.left) + "px";
+    no.style.top = (r.top - a.top) + "px";
+  }
+  var vh = window.innerHeight;
+  var minX = m, maxX = Math.max(minX, a.width - w - m);
+  var minY = Math.max(m, -a.top + m), maxY = Math.max(minY, Math.min(a.height - h - m, vh - a.top - h - m));
+  var y = yes.getBoundingClientRect(), hd = head.getBoundingClientRect(), x, yy, tries = 0, ok;
   do {
-    tx = pad + Math.random()*(w - r.width - 2*pad) - ox;
-    ty = pad + Math.random()*(h - r.height - 2*pad) - oy;
-    var L = ox + tx, T = oy + ty;
-    var far = Math.hypot(tx - cx, ty - cy) > 100;
-    var clear = L > y.right + 20 || L + r.width < y.left - 20 || T > y.bottom + 20 || T + r.height < y.top - 20;
-    ok = far && clear; tries++;
-  } while (!ok && tries < 30);
-  cx = tx; cy = ty;
-  no.style.transform = "translate(" + tx + "px," + ty + "px)";
+    x = minX + Math.random()*(maxX - minX);
+    yy = minY + Math.random()*(maxY - minY);
+    var box = {left:a.left+x, top:a.top+yy, right:a.left+x+w, bottom:a.top+yy+h};
+    ok = Math.hypot(box.left - r.left, box.top - r.top) > 80 && !hit(box, y, 16) && !hit(box, hd, 8);
+    tries++;
+  } while (!ok && tries < 40);
+  no.style.left = x + "px";
+  no.style.top = yy + "px";
 }
-no.addEventListener("touchstart", function(e){ e.preventDefault(); dodge(); }, {passive:false});
-no.addEventListener("pointerenter", dodge);
+// if the screen scrolls or rotates and No ends up off-screen, bring it back
+function keep(){
+  if (!holder) return;
+  var a = ask.getBoundingClientRect();
+  if (a.bottom <= 0 || a.top >= window.innerHeight) return;
+  var r = no.getBoundingClientRect();
+  if (r.top < 0 || r.bottom > window.innerHeight || r.left < 0 || r.right > document.documentElement.clientWidth) { lastT = 0; dodge(); }
+}
+window.addEventListener("scroll", keep, {passive:true});
+window.addEventListener("resize", keep);
+
+no.addEventListener("pointerenter", function(e){ if (e.pointerType === "mouse") dodge(); });
 no.addEventListener("pointerdown", function(e){ e.preventDefault(); dodge(); });
+no.addEventListener("touchstart", function(e){ e.preventDefault(); dodge(); }, {passive:false});
 no.addEventListener("click", function(e){ e.preventDefault(); dodge(); });
-$("yes").addEventListener("click", function(){
-  $("btns").hidden = true; $("done").hidden = false; 
+yes.addEventListener("click", function(){
+  $("btns").hidden = true; $("done").hidden = false;
 });
 </script>
 </body>
