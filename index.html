@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Four months with Pema</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=DM+Sans:wght@400;500&display=swap">
+<style>
+:root{
+  --plum:#2a1330; --plum2:#3b1c44; --lotus:#f2a6c0; --petal:#f9d3e0; --saffron:#f4b942; --ink:#fbf3f6; --muted:#c9aebd;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0}
+body{background:var(--plum);color:var(--ink);font:400 17px/1.6 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,.serif{font-family:Fraunces,Georgia,serif;font-weight:500;margin:0}
+section{max-width:640px;margin:0 auto;padding:72px 24px}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
+
+/* hero */
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:40px;
+  background:radial-gradient(ellipse at 50% 30%,var(--plum2),var(--plum) 70%)}
+.heart{position:relative;display:grid;place-items:center;aspect-ratio:1;background:var(--lotus);clip-path:url(#heartClip);color:var(--plum);font-size:.7rem;text-align:center;line-height:1.2;padding-bottom:12%}
+.heart img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.heart input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.heart:focus-within{background:var(--saffron)}
+.hearts{position:relative;width:min(440px,94%);aspect-ratio:250/140;margin:0 auto;filter:drop-shadow(0 8px 16px #0005)}
+.hearts svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.hearts .heart{position:absolute;aspect-ratio:auto;padding:0;background:#ffffff18;color:var(--petal);z-index:1;font-size:.75rem}
+h1{font-size:clamp(3.2rem,16vw,6rem);line-height:1;margin-top:8px}
+h1 span{display:block;font-style:italic;font-weight:400;font-size:.38em;color:var(--lotus);margin-bottom:.35em}
+.counter{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:36px 0 10px;width:100%;max-width:420px}
+.counter div{border-top:2px solid var(--saffron);padding-top:6px}
+.counter b{display:block;font:500 clamp(1.6rem,8vw,2.4rem)/1.1 Fraunces,Georgia,serif;font-variant-numeric:tabular-nums}
+.counter small{color:var(--muted);font-size:.8rem}
+.sub{color:var(--muted);margin:0}
+
+h2{font-size:clamp(1.8rem,7vw,2.4rem);margin-bottom:28px}
+
+/* months */
+.month{display:grid;grid-template-columns:110px 1fr;gap:18px;padding:20px 0;border-top:1px solid #ffffff22}
+.ph{aspect-ratio:1;border-radius:50% 50% 50% 4px;background:var(--plum2);overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:.75rem;text-align:center;padding:6px}
+.ph img{width:100%;height:100%;object-fit:cover}
+.month h3{font:500 1.25rem Fraunces,Georgia,serif;margin:0 0 4px;color:var(--lotus)}
+.month p{margin:0}
+
+/* wishlist */
+.wish{list-style:none;margin:0;padding:0}
+.wish button{display:flex;gap:14px;align-items:center;width:100%;text-align:left;font:400 1.1rem/1.4 "DM Sans",sans-serif;color:var(--ink);background:none;border:0;border-top:1px solid #ffffff22;padding:16px 0;cursor:pointer}
+.wish i{flex:none;width:26px;height:26px;border:2px solid var(--lotus);border-radius:50% 50% 50% 4px;display:grid;place-items:center;font-style:normal;color:var(--plum);transition:background .2s}
+.wish button[aria-pressed=true] i{background:var(--lotus)}
+.wish button[aria-pressed=true] i::after{content:"\2665"}
+.wish button[aria-pressed=true] span{color:var(--muted)}
+/* reasons */
+.reason{min-height:7.5em;font:italic 400 clamp(1.4rem,6vw,1.9rem)/1.35 Fraunces,Georgia,serif;margin:0 0 24px}
+button.b{font:500 1rem "DM Sans",sans-serif;padding:14px 26px;border-radius:999px;border:0;cursor:pointer;background:var(--lotus);color:var(--plum)}
+button.b.alt{background:transparent;color:var(--ink);border:2px solid var(--lotus)}
+
+/* letter */
+.letter{font:400 1.2rem/1.8 Fraunces,Georgia,serif;white-space:pre-wrap;min-height:16em}
+.cur::after{content:"";display:inline-block;width:2px;height:1.1em;background:var(--saffron);margin-left:2px;vertical-align:-2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+
+/* ask */
+.ask{text-align:center;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.ask h2{font-size:clamp(2rem,9vw,3rem)}
+.btns{display:flex;gap:16px;justify-content:center;align-items:center;min-height:60px;position:relative;flex-wrap:wrap}
+#no{transition:transform .25s}
+.yes{font-size:1.4rem;color:var(--saffron)}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:24px 24px 48px}
+@media (prefers-reduced-motion:reduce){.p{transition:none}.cur::after{animation:none}#no{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><clipPath id="heartClip" clipPathUnits="objectBoundingBox"><path d="M0.5,1 C0.08,0.7 0,0.45 0,0.28 C0,0.1 0.13,0 0.27,0 C0.38,0 0.46,0.06 0.5,0.14 C0.54,0.06 0.62,0 0.73,0 C0.87,0 1,0.1 1,0.28 C1,0.45 0.92,0.7 0.5,1 Z"/></clipPath></svg>
+
+<section class="hero" aria-label="Four months with Pema">
+  <div class="hearts">
+    <label class="heart" style="left:6.7%;top:17.7%;width:43%;height:70%"><span>Add<br>photo</span><img src="me.jpeg" alt="Me"><input type="file" accept="image/*" data-k="ph1" aria-label="Add the first photo of us"></label>
+    <label class="heart" style="left:49.9%;top:10.5%;width:43%;height:70%"><span>Add<br>photo</span><img src="pema.jpeg" alt="Pema"><input type="file" accept="image/*" data-k="ph2" aria-label="Add the second photo of us"></label>
+    <svg viewBox="0 0 250 140" aria-hidden="true">
+      <defs><path id="hp" d="M50,90 C10,60 0,40 0,26 C0,10 12,0 27,0 C38,0 46,6 50,14 C54,6 62,0 73,0 C88,0 100,10 100,26 C100,40 90,60 50,90 Z"/><clipPath id="front"><rect x="100" y="56" width="50" height="84"/></clipPath></defs>
+      <g fill="none" stroke-width="14" stroke-linejoin="round">
+        <use href="#hp" transform="translate(116 6) scale(1.25)" stroke="#f48fb1"/>
+        <use href="#hp" transform="translate(8 16) scale(1.25)" stroke="#d9374f"/>
+        <g clip-path="url(#front)"><use href="#hp" transform="translate(116 6) scale(1.25)" stroke="#f48fb1"/></g>
+      </g>
+    </svg>
+  </div>
+  <h1><span>Happy 4 months,</span>Pema</h1>
+  <div class="counter" aria-live="off">
+    <div><b id="cm">0</b><small>months</small></div>
+    <div><b id="cd">0</b><small>days</small></div>
+    <div><b id="ch">0</b><small>hours</small></div>
+    <div><b id="cn">0</b><small>min</small></div>
+    <div><b id="cs">0</b><small>sec</small></div>
+  </div>
+  <p class="sub">and I’m still counting.</p>
+</section>
+
+<section>
+  <h2>When we finally meet</h2>
+  <p class="sub" style="margin-bottom:16px">I would like to !!!</p>
+  <ul class="wish" id="wish"></ul>
+</section>
+
+<section>
+  <h2>Reasons I like you</h2>
+  <p class="reason" id="reason" aria-live="polite">Press the button. I have a lot of them.</p>
+  <button class="b" id="more">Next</button>
+</section>
+
+<section>
+  <h2>A note, just for you</h2>
+  <div class="letter" id="letter"></div>
+</section>
+
+<section class="ask">
+  <h2>Pema Selden, you are the best part of my life. Will you be my partner forever?</h2>
+  <div class="btns" id="btns">
+    <button class="b" id="yes">Yes</button>
+    <button class="b alt" id="no">No</button>
+  </div>
+  <p class="yes" id="done" hidden>Best answer. I’ll see you on the next monthsary. ♥</p>
+</section>
+
+<footer>Made for My Babs.</footer>
+
+<script>
+// ---- Edit these ----
+var START = new Date(2026, 6, 9);   // 9 July 2026 -> 4 months on 9 November
+var WISHES = [
+  "Hear your real voice for the first time, no phone in between",
+  "Take our first photo together",
+  "Share a meal",
+  "Walk around and talk for hours",
+  "Give you a simple hug",
+  "Watch a movie side by side instead of on a call"
+];
+var REASONS = [
+    "Every little message from you brings a smile to my face and makes my day.",
+  "Your laugh through the phone makes any day better.",
+  "You make a normal chat feel like the best part of my day.",
+  "I feel like myself around you.",
+  "We joke so much that I forget we’re miles apart.",
+  "Talking to you is the best part of my day.",
+  "💕I LOVE YOU💕"
+];
+var LETTER = "Pema,\n\nFour months ago we were two people chatting, and now I smile every time your name shows up on my phone.\n\nThank you for the long calls, the silly jokes, and for feeling close even when we’re far apart.\n\nI can’t wait for the day we finally meet, and until then I’ll keep making you laugh.\n\nHappy 4 months, BABE💕";
+// --------------------
+
+var $ = function(id){return document.getElementById(id)};
+var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+// counter
+function pad(n){return n}
+function tick(){
+  var now = new Date(), m = (now.getFullYear()-START.getFullYear())*12 + now.getMonth()-START.getMonth();
+  var base = new Date(START); base.setMonth(START.getMonth()+m);
+  if (base > now) { m--; base = new Date(START); base.setMonth(START.getMonth()+m); }
+  var r = Math.max(0, now - base);
+  $("cm").textContent = Math.max(0,m);
+  $("cd").textContent = Math.floor(r/864e5);
+  $("ch").textContent = Math.floor(r/36e5)%24;
+  $("cn").textContent = Math.floor(r/6e4)%60;
+  $("cs").textContent = Math.floor(r/1e3)%60;
+}
+tick(); setInterval(tick, 1000);
+
+// heart photos (tap a heart to choose a photo)
+var HEART_PHOTOS = {ph1:"", ph2:""};  // paste image data here to keep photos permanently
+function showPhoto(k, src){ var im=$(k); im.src=src; im.hidden=false; }
+Object.keys(HEART_PHOTOS).forEach(function(k){
+  var s = HEART_PHOTOS[k];
+  try { s = s || localStorage.getItem(k) || ""; } catch(e) {}
+  if (s) showPhoto(k, s);
+});
+document.querySelectorAll(".heart input").forEach(function(inp){
+  inp.addEventListener("change", function(){
+    var f = inp.files[0]; if (!f) return;
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function(){
+      var c = document.createElement("canvas"), z = 400, r = Math.min(img.width,img.height);
+      c.width = c.height = z;
+      c.getContext("2d").drawImage(img, (img.width-r)/2, (img.height-r)/2, r, r, 0, 0, z, z);
+      var d = c.toDataURL("image/jpeg", .85); showPhoto(inp.dataset.k, d);
+      try { localStorage.setItem(inp.dataset.k, d); } catch(e) {}
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  });
+});
+
+// months
+$("wish").innerHTML = WISHES.map(function(w){
+  return '<li><button aria-pressed="false"><i></i><span>'+w+'</span></button></li>';
+}).join("");
+$("wish").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if (!b) return;
+  b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true");
+});
+
+// reasons
+var last = -1;
+$("more").addEventListener("click", function(){
+  var i; do { i = Math.floor(Math.random()*REASONS.length); } while (i === last && REASONS.length > 1);
+  last = i; $("reason").textContent = REASONS[i]; $("more").textContent = "Another one";
+});
+
+// letter typewriter
+var L = $("letter"), started = false;
+function type(){
+  if (started) return; started = true;
+  if (reduce) { L.textContent = LETTER; return; }
+  var i = 0; L.classList.add("cur");
+  (function step(){ L.textContent = LETTER.slice(0, ++i); if (i < LETTER.length) setTimeout(step, 45); else L.classList.remove("cur"); })();
+}
+new IntersectionObserver(function(e){ if (e[0].isIntersecting) type(); }, {threshold:.5}).observe(L);
+
+// the question
+var no = $("no"), cx = 0, cy = 0;
+no.style.touchAction = "manipulation";
+function dodge(){
+  var r = no.getBoundingClientRect(), y = $("yes").getBoundingClientRect();
+  var ox = r.left - cx, oy = r.top - cy, pad = 12, w = window.innerWidth, h = window.innerHeight;
+  var tx, ty, tries = 0, ok;
+  do {
+    tx = pad + Math.random()*(w - r.width - 2*pad) - ox;
+    ty = pad + Math.random()*(h - r.height - 2*pad) - oy;
+    var L = ox + tx, T = oy + ty;
+    var far = Math.hypot(tx - cx, ty - cy) > 100;
+    var clear = L > y.right + 20 || L + r.width < y.left - 20 || T > y.bottom + 20 || T + r.height < y.top - 20;
+    ok = far && clear; tries++;
+  } while (!ok && tries < 30);
+  cx = tx; cy = ty;
+  no.style.transform = "translate(" + tx + "px," + ty + "px)";
+}
+no.addEventListener("touchstart", function(e){ e.preventDefault(); dodge(); }, {passive:false});
+no.addEventListener("pointerenter", dodge);
+no.addEventListener("pointerdown", function(e){ e.preventDefault(); dodge(); });
+no.addEventListener("click", function(e){ e.preventDefault(); dodge(); });
+$("yes").addEventListener("click", function(){
+  $("btns").hidden = true; $("done").hidden = false; 
+});
+</script>
+</body>
+</html>
